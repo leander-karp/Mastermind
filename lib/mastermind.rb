@@ -1,12 +1,8 @@
 # frozen_string_literal: true
+require 'renderer'
 
 # The Mastermind class provides the interface to play a game of Master Mind
 class Mastermind
-  class Renderer
-    def self.print(msg)
-      puts msg 
-    end 
-  end
   def start
     Renderer.print('Do you want to be the codebreaker?')
     player_decision = gets.chomp
