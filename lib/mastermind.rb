@@ -5,7 +5,10 @@ class Mastermind
   def start
     puts 'Please enter your next guess:'
     guess = gets.chomp
-    puts 'Correct guess' if guess == '1111'
-    puts 'Incorrect guess' unless guess == '1111'
+    if (1111..6666).include?(guess.to_i)
+      puts 'Correct guess' 
+    else 
+      puts 'Incorrect guess' 
+    end
   end
 end
