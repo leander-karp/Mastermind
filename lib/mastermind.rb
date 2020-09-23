@@ -8,6 +8,7 @@ class Mastermind
 
   def initialize(renderer)
     @renderer = renderer
+    @secret = generate_secret_code
   end
 
   def rate_guess
@@ -21,12 +22,16 @@ class Mastermind
   end
 
   private
-
   def verify_guess(guess)
     return false if guess.size != 4
 
     guess.split('').map do |char|
       (1..6).include?(char.to_i)
     end.all?
+  end
+
+  def generate_secret_code
+    generator = Random.new
+    Array.new(4) {generator.rand(6)+1}
   end
 end
