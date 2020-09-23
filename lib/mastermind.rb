@@ -1,22 +1,33 @@
 # frozen_string_literal: true
 
+require_relative 'renderer'
+
 # The Mastermind class provides the interface to play a game of Master Mind
 class Mastermind
-  def start
-    player_guesses
+  def rate_guess
+    puts 'Your guess received no pegs.'
   end
 
-  private 
-
-  def player_guesses
-    puts 'Please enter your next guess:'
-    guess = gets.chomp
-
-    while !((1111..6666).include?(guess.to_i)) || guess.include?('0')
-      puts 'Invalid guess' 
-      puts 'Please enter your next guess:'
-      guess = gets.chomp
+  def make_player_guess
+    guess = render_make_guess
+    while !verify_guess(guess)
+      Renderer.print 'Invalid guess'
+      guess = render_make_guess
     end
-    puts 'Correct guess' 
+    Renderer.print 'Correct guess'
+    
+  end
+
+  private
+
+  def render_make_guess
+    Renderer.input 'Please enter your next guess:'
+  end
+
+  def verify_guess(guess)
+    return false if guess.size != 4
+    guess.split('').map do |char|
+      (1..6).include?(char.to_i)
+    end.all?
   end
 end
