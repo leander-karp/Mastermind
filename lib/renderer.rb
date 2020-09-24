@@ -5,6 +5,7 @@ class Renderer
   INVALID_GUESS = 'Invalid guess'
   CORRECT_GUESS = 'Correct guess'
   MAKE_GUESS = 'Please enter your next guess:'
+  RATING = 'Your guess received %s %s pegs.'
 
   def display_invalid_guess
     display INVALID_GUESS
@@ -15,7 +16,7 @@ class Renderer
   end
 
   def display_rating(number_of_pegs, color)
-    display "Your guess received #{number_of_pegs} #{color} pegs."
+    display format(RATING, number_of_pegs, color)
   end
 
   def input_guess

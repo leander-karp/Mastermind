@@ -2,8 +2,8 @@
 
 require 'renderer_spy'
 
-RSpec.describe RendererSpy do
-  subject(:renderer) { described_class.new }
+RSpec.describe Renderer do
+  subject(:renderer) { RendererSpy.new }
 
   describe '#display_invalid_guess ' do
     it 'displays an invalid guess message' do
