@@ -71,8 +71,8 @@ RSpec.describe MastermindSpy do
         game.secret = [1, 1, 2, 2]
         allow(renderer).to receive(:gets).and_return('3112')
         expected_output = [format(Renderer::RATING, 2, 'black'),
-          format(Renderer::RATING, 1, 'white')]
-game.make_player_guess
+                           format(Renderer::RATING, 1, 'white')]
+        game.make_player_guess
         game.rate_guess
         expect(renderer.displayed_msgs[-2, 2]).to eq expected_output
       end
