@@ -41,5 +41,17 @@ RSpec.describe Renderer do
       renderer.display_guesses
       expect(renderer.displayed_msgs).to eq expected_output
     end
+
+    it 'displays all guesses made including an numeration' do
+      guesses = %w[1111 2222]
+      format_string = '%<index>i. %<guess>s'
+      expected_output = [Renderer::PAST_GUESSES]
+      guesses.each_with_index do |guess, i|
+        expected_output.push format(format_string, { index: i+1, guess: guess })
+      end
+
+      renderer.display_guesses guesses
+      expect(renderer.displayed_msgs).to eq expected_output
+    end
   end
 end

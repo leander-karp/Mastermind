@@ -7,6 +7,7 @@ class Renderer
   MAKE_GUESS = 'Please enter your next guess:'
   RATING = 'Your guess received %s %s pegs.'
   NO_PAST_GUESSES = 'There aren\'t any past guesses.'
+  PAST_GUESSES = 'You made the following guesses:'
 
   def display_invalid_guess
     display INVALID_GUESS
@@ -24,8 +25,11 @@ class Renderer
     input MAKE_GUESS
   end
 
-  def display_guesses
-    display NO_PAST_GUESSES
+  def display_guesses(guesses = [])
+    display(guesses.empty? ? NO_PAST_GUESSES : PAST_GUESSES)
+    guesses.each_with_index do |guess, index|
+      display format('%<index>i. %<guess>s', { index: index+1, guess: guess })
+    end
   end
 
   private
