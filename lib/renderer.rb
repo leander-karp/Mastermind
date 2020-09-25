@@ -6,6 +6,7 @@ class Renderer
   CORRECT_GUESS = 'Correct guess'
   MAKE_GUESS = 'Please enter your next guess:'
   RATING = 'Your guess received %s %s pegs.'
+  NO_PAST_GUESSES = 'There aren\'t any past guesses.'
 
   def display_invalid_guess
     display INVALID_GUESS
@@ -21,6 +22,10 @@ class Renderer
 
   def input_guess
     input MAKE_GUESS
+  end
+
+  def display_guesses
+    display NO_PAST_GUESSES
   end
 
   private

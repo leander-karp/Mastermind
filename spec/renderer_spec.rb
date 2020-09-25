@@ -35,5 +35,11 @@ RSpec.describe Renderer do
     end
   end
 
-  it '#display_board'
+  describe '#display_guesses' do
+    it 'displays that no guesses where made if there are no guesses' do
+      expected_output = [Renderer::NO_PAST_GUESSES]
+      renderer.display_guesses
+      expect(renderer.displayed_msgs).to eq expected_output
+    end
+  end
 end
