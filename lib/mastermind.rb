@@ -6,6 +6,9 @@ require_relative 'renderer'
 class Mastermind
   attr_reader :renderer
 
+  SIZE = 4
+  COLORS = (1..6).freeze
+
   def initialize(renderer)
     @renderer = renderer
     @secret = generate_secret_code
@@ -17,7 +20,7 @@ class Mastermind
     black_pegs = 0
     white_pegs = 0
     @current_guess.each_with_index do |current_color, index|
-      next unless (pegs_per_color[current_color]).positive?
+      next if (pegs_per_color[current_color]).zero?
 
       if current_color == @secret[index]
         black_pegs += 1
@@ -45,21 +48,21 @@ class Mastermind
   private
 
   def verify_guess(guess)
-    return false if guess.size != 4
+    return false if guess.size != SIZE
 
     guess.split('').map do |char|
-      (1..6).include?(char.to_i)
+      COLORS.include?(char.to_i)
     end.all?
   end
 
   def generate_secret_code
     generator = Random.new
-    Array.new(4) { generator.rand(6) + 1 }
+    Array.new(SIZE) { generator.rand(6) + 1 }
   end
 
   def count_secret_color_occurences
     pegs_per_color = {}
-    (1..6).each do |color|
+    COLORS.each do |color|
       pegs_per_color[color] = @secret.count(color)
     end
     pegs_per_color

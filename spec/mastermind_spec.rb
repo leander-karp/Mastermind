@@ -57,7 +57,7 @@ RSpec.describe MastermindSpy do
         expect(renderer.displayed_msgs[-2, 2]).to eq expected_output
       end
 
-      it 'does not award more than one peg per digit' do
+      it 'awards a maximum of one peg per guess slot' do
         game.secret = [1, 1, 2, 2]
         allow(renderer).to receive(:gets).and_return('1112')
         expected_output = [format(Renderer::RATING, 3, 'black'),
@@ -67,7 +67,7 @@ RSpec.describe MastermindSpy do
         expect(renderer.displayed_msgs[-2, 2]).to eq expected_output
       end
 
-      it 'does not award more than one peg per digit (triangulation)' do
+      it 'awards no white pegs if the peg is in the right position' do
         game.secret = [1, 1, 2, 2]
         allow(renderer).to receive(:gets).and_return('3112')
         expected_output = [format(Renderer::RATING, 2, 'black'),
