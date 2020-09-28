@@ -160,4 +160,8 @@ RSpec.describe MastermindSpy do
       end
     end
   end
+
+  it '#start'
+  # - shows guesses, counts rounds, gets players input
+  # rates guesses, promts the winner, provides a welcome message
 end
