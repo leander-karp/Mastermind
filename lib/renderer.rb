@@ -8,6 +8,7 @@ class Renderer
   RATING = 'Your guess received %s %s pegs.'
   NO_GUESSES_EXIST = 'There aren\'t any past guesses.'
   GUESSES_EXIST = 'You made the following guesses:'
+  CODEBREAKER_QUESTION = 'Do you want to be the codebreaker (y/n)?'
 
   def display_invalid_guess
     display INVALID_GUESS
@@ -23,6 +24,10 @@ class Renderer
 
   def input_guess
     input MAKE_GUESS
+  end
+
+  def choose_role
+    input CODEBREAKER_QUESTION
   end
 
   def display_guesses(guesses = [])
