@@ -56,8 +56,7 @@ RSpec.describe MastermindSpy do
       it 'asks for guesses until a correct guess is provided' do
         expected_output = [Renderer::MAKE_GUESS,
                            Renderer::INVALID_GUESS,
-                           Renderer::MAKE_GUESS,
-                           Renderer::CORRECT_GUESS]
+                           Renderer::MAKE_GUESS]
 
         invalid_codes.each do |invalid_guess|
           correct_guess = correct_codes.sample.join('')
@@ -192,7 +191,7 @@ RSpec.describe MastermindSpy do
       # 5. rate guess
       # 6. game over
 
-      before(:each) { allow(renderer).to receive(:gets).and_return('y') }
+      before(:each) { allow(renderer).to receive(:gets).and_return('y', '1111') }
 
       it 'displays a welcome message' do 
         game.start
@@ -207,6 +206,11 @@ RSpec.describe MastermindSpy do
       it 'displays that no guesses were made' do 
         game.start
         expect(renderer.displayed_msgs[2]).to eq Renderer::NO_GUESSES_EXIST
+      end 
+
+      it 'lets the player make a guess' do 
+        game.start
+        expect(renderer.displayed_msgs[3]).to eq Renderer::MAKE_GUESS
       end 
 
       it 'lets the player guess 12 times, rates the guesses and shows all past guesses each time ' 

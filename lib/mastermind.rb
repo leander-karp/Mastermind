@@ -39,6 +39,7 @@ class Mastermind
     renderer.display_welcome_msg
     choose_role
     renderer.display_guesses
+    make_player_guess
   end
 
   def make_player_guess
@@ -49,7 +50,6 @@ class Mastermind
       @current_guess = renderer.input_guess
     end
     @current_guess = @current_guess.split('').map(&:to_i)
-    renderer.display_correct_guess
   end
 
   def choose_role
