@@ -10,6 +10,7 @@ class Mastermind
   COLORS = (1..6).freeze
 
   def initialize(renderer)
+    @is_player_codebreaker = false
     @renderer = renderer
     @secret = generate_secret_code
     @current_guess = []
@@ -47,11 +48,10 @@ class Mastermind
 
   def choose_role
     decision = renderer.choose_role
-    if %w[y n].include?(decision)
-      @is_player_codebreaker = (decision == 'y')
-    else
-      choose_role
+    while !%w[y n].include?(decision)
+      decision = renderer.choose_role
     end
+    @is_player_codebreaker = (decision == 'y')
   end
 
   def player_codebreaker?
