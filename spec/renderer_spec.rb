@@ -53,4 +53,11 @@ RSpec.describe Renderer do
       expect(renderer.displayed_msgs).to eq expected_output
     end
   end
+
+  describe '#display_welcome_msg' do 
+    it 'displays a proper welcome message' do 
+      renderer.display_welcome_msg
+      expect(renderer.displayed_msgs).to eq [described_class::WELCOME_MSG]
+    end 
+  end
 end
