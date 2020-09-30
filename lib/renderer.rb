@@ -6,6 +6,8 @@ class Renderer
   CORRECT_GUESS = 'Correct guess'
   MAKE_GUESS = 'Please enter your next guess:'
   RATING = 'Your guess received %s %s pegs.'
+  NO_GUESSES_EXIST = 'There aren\'t any past guesses.'
+  GUESSES_EXIST = 'You made the following guesses:'
 
   def display_invalid_guess
     display INVALID_GUESS
@@ -21,6 +23,13 @@ class Renderer
 
   def input_guess
     input MAKE_GUESS
+  end
+
+  def display_guesses(guesses = [])
+    display(guesses.empty? ? NO_GUESSES_EXIST : GUESSES_EXIST)
+    guesses.each_with_index do |guess, index|
+      display "#{index + 1}. #{guess}"
+    end
   end
 
   private

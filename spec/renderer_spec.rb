@@ -35,5 +35,22 @@ RSpec.describe Renderer do
     end
   end
 
-  it '#display_board'
+  describe '#display_guesses' do
+    it 'displays that no guesses where made if there are no guesses' do
+      expected_output = [Renderer::NO_GUESSES_EXIST]
+      renderer.display_guesses
+      expect(renderer.displayed_msgs).to eq expected_output
+    end
+
+    it 'displays all guesses made including an numeration' do
+      guesses = %w[1111 2222]
+      expected_output = [Renderer::GUESSES_EXIST]
+      guesses.each_with_index do |guess, index|
+        expected_output.push "#{index + 1}. #{guess}"
+      end
+
+      renderer.display_guesses guesses
+      expect(renderer.displayed_msgs).to eq expected_output
+    end
+  end
 end
