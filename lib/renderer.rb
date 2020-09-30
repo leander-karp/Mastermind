@@ -28,7 +28,6 @@ class Renderer
 
   def choose_role
     result = input CODEBREAKER_QUESTION
-    result == 'y'
   end
 
   def display_guesses(guesses = [])

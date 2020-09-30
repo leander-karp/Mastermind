@@ -55,9 +55,9 @@ RSpec.describe Renderer do
   end
 
   describe '#choose_role' do
-    it "equals true if the player answers 'y'" do
+    it "equals 'y' if the player answers 'y'" do
       allow(renderer).to receive(:gets).and_return('y')
-      expect(renderer.choose_role).to eq true
+      expect(renderer.choose_role).to eq 'y'
       expect(renderer.displayed_msgs).to eq [Renderer::CODEBREAKER_QUESTION]
     end
   end

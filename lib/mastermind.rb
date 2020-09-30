@@ -45,6 +45,19 @@ class Mastermind
     renderer.display_correct_guess
   end
 
+  def choose_role
+    decision = renderer.choose_role
+    if ['y', 'n'].include?(decision)
+      @is_player_codebreaker = (decision == 'y')
+    else 
+      choose_role
+    end
+  end 
+
+  def is_player_codebreaker? 
+    @is_player_codebreaker
+  end
+
   private
 
   def verify_guess(guess)
