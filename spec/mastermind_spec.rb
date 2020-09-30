@@ -181,9 +181,43 @@ RSpec.describe MastermindSpy do
         end
       end
     end
+
+    describe '#start' do
+      # 1. welcome
+      # 2.1. choose role
+      # 2.2. set secret (player or computer)
+      # for i < 12
+      # 3. show guesses
+      # 4. make guess (player or computer)
+      # 5. rate guess
+      # 6. game over
+
+      before(:each) { allow(renderer).to receive(:gets).and_return('y') }
+
+      it 'displays a welcome message' do 
+        game.start
+        expect(renderer.displayed_msgs[0]).to eq Renderer::WELCOME_MSG
+      end
+
+      it 'lets the player choose his role' do
+        game.start
+        expect(renderer.displayed_msgs[1]).to eq Renderer::CODEBREAKER_QUESTION
+      end
+
+      it 'displays that no guesses were made' do 
+        game.start
+        expect(renderer.displayed_msgs[2]).to eq Renderer::NO_GUESSES_EXIST
+      end 
+
+      it 'lets the player guess 12 times, rates the guesses and shows all past guesses each time ' 
+    end
   end
 
-  it '#start'
-  # - shows guesses, counts rounds, gets players input
-  # rates guesses, promts the winner, provides a welcome message
+  context 'player is codemaker' do
+    it '#computer_guess'
+    it 'makes sure that the player can set a secrect'
+    it '#start'
+    # - shows guesses, counts rounds, gets players input
+    # rates guesses, promts the winner, provides a welcome message
+  end
 end

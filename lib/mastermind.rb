@@ -35,6 +35,12 @@ class Mastermind
     renderer.display_rating(white_pegs, 'white')
   end
 
+  def start
+    renderer.display_welcome_msg
+    choose_role
+    renderer.display_guesses
+  end
+
   def make_player_guess
     @current_guess = renderer.input_guess
 
@@ -48,9 +54,7 @@ class Mastermind
 
   def choose_role
     decision = renderer.choose_role
-    while !%w[y n].include?(decision)
-      decision = renderer.choose_role
-    end
+    decision = renderer.choose_role until %w[y n].include?(decision)
     @is_player_codebreaker = (decision == 'y')
   end
 
