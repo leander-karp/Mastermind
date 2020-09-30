@@ -54,6 +54,12 @@ RSpec.describe Renderer do
     end
   end
 
+  describe '#display_welcome_msg' do
+    it 'displays a proper welcome message' do
+      renderer.display_welcome_msg
+      expect(renderer.displayed_msgs).to eq [described_class::WELCOME_MSG]
+    end
+  end
   describe '#choose_role' do
     it "equals 'y' if the player answers 'y'" do
       allow(renderer).to receive(:gets).and_return('y')
