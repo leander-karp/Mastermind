@@ -8,9 +8,9 @@ class Renderer
   RATING = 'Your guess received %s %s pegs.'
   NO_GUESSES_EXIST = 'There aren\'t any past guesses.'
   GUESSES_EXIST = 'You made the following guesses:'
-  WELCOME_MSG = 'Welcome to Mastermind.'\
-  'You may select whether you wish to be codemaker or codebreaker.'\
-  'A correct guess consists of 4 number between 1 to 6.'
+  WELCOME_MSG = "Welcome to Mastermind.
+You may select whether you wish to be codemaker or codebreaker.
+A correct guess consists of 4 number between 1 to 6."
 
   def display_invalid_guess
     display INVALID_GUESS
@@ -26,7 +26,7 @@ class Renderer
 
   def display_welcome_msg
     display WELCOME_MSG
-  end 
+  end
 
   def input_guess
     input MAKE_GUESS
