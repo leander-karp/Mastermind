@@ -208,9 +208,13 @@ RSpec.describe MastermindSpy do
         expect(renderer.displayed_msgs[2]).to eq Renderer::NO_GUESSES_EXIST
       end 
 
-      it 'lets the player make a guess' do 
+      it 'lets the player make a guess and rates it' do 
+        game.secret = [1,1,1,1]
         game.start
         expect(renderer.displayed_msgs[3]).to eq Renderer::MAKE_GUESS
+        expect(renderer.displayed_msgs[4]).to eq Renderer::RATING % [4, 'black']
+        expect(renderer.displayed_msgs[5]).to eq Renderer::RATING % [0, 'white']
+
       end 
 
       it 'lets the player guess 12 times, rates the guesses and shows all past guesses each time ' 

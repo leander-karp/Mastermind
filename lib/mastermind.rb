@@ -16,6 +16,14 @@ class Mastermind
     @current_guess = []
   end
 
+  def start
+    renderer.display_welcome_msg
+    choose_role
+    renderer.display_guesses
+    make_player_guess
+    rate_guess
+  end
+
   def rate_guess
     pegs_per_color = count_secret_color_occurences
     black_pegs = 0
@@ -33,13 +41,6 @@ class Mastermind
 
     renderer.display_rating(black_pegs, 'black')
     renderer.display_rating(white_pegs, 'white')
-  end
-
-  def start
-    renderer.display_welcome_msg
-    choose_role
-    renderer.display_guesses
-    make_player_guess
   end
 
   def make_player_guess
