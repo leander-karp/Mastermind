@@ -10,7 +10,7 @@ class Renderer
   GUESSES_EXIST = 'You made the following guesses:'
   WELCOME_MSG = "Welcome to Mastermind.
 You may select whether you wish to be codemaker or codebreaker.
-A correct guess consists of 4 number between 1 to 6."
+A correct guess consists of 4 numbers between 1 to 6, e.g. '1111'."
   CODEBREAKER_QUESTION = 'Do you want to be the codebreaker (y/n)?'
 
   def display_invalid_guess
@@ -48,7 +48,7 @@ A correct guess consists of 4 number between 1 to 6."
 
   def input(msg)
     display msg
-    gets.chomp
+    gets.chomp.strip
   end
 
   def display(msg)
