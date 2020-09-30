@@ -11,6 +11,7 @@ class Renderer
   WELCOME_MSG = "Welcome to Mastermind.
 You may select whether you wish to be codemaker or codebreaker.
 A correct guess consists of 4 number between 1 to 6."
+  CODEBREAKER_QUESTION = 'Do you want to be the codebreaker (y/n)?'
 
   def display_invalid_guess
     display INVALID_GUESS
@@ -30,6 +31,10 @@ A correct guess consists of 4 number between 1 to 6."
 
   def input_guess
     input MAKE_GUESS
+  end
+
+  def choose_role
+    input CODEBREAKER_QUESTION
   end
 
   def display_guesses(guesses = [])

@@ -60,4 +60,11 @@ RSpec.describe Renderer do
       expect(renderer.displayed_msgs).to eq [described_class::WELCOME_MSG]
     end
   end
+  describe '#choose_role' do
+    it "equals 'y' if the player answers 'y'" do
+      allow(renderer).to receive(:gets).and_return('y')
+      expect(renderer.choose_role).to eq 'y'
+      expect(renderer.displayed_msgs).to eq [Renderer::CODEBREAKER_QUESTION]
+    end
+  end
 end
