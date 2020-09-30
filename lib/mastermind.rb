@@ -47,14 +47,14 @@ class Mastermind
 
   def choose_role
     decision = renderer.choose_role
-    if ['y', 'n'].include?(decision)
+    if %w[y n].include?(decision)
       @is_player_codebreaker = (decision == 'y')
-    else 
+    else
       choose_role
     end
-  end 
+  end
 
-  def is_player_codebreaker? 
+  def player_codebreaker?
     @is_player_codebreaker
   end
 

@@ -29,27 +29,27 @@ RSpec.describe MastermindSpy do
     renderer.displayed_msgs.clear
   end
 
-  describe '#choose_role' do 
-    it "equals true if the player typed 'y'" do 
+  describe '#choose_role' do
+    it "equals true if the player typed 'y'" do
       expect(renderer).to receive(:gets).and_return('y')
       game.choose_role
-      expect(game.is_player_codebreaker?).to eq true 
-    end 
+      expect(game.player_codebreaker?).to eq true
+    end
 
-    it "equals false if the player typed 'n'" do 
+    it "equals false if the player typed 'n'" do
       expect(renderer).to receive(:gets).and_return('n')
       game.choose_role
-      expect(game.is_player_codebreaker?).to eq false 
-    end 
+      expect(game.player_codebreaker?).to eq false
+    end
 
-    it 'asks until y is provided' do 
+    it 'asks until y is provided' do
       expect(renderer).to receive(:gets).and_return('a', 'b', 'n')
       game.choose_role
       number_of_questions = renderer.displayed_msgs.count(Renderer::CODEBREAKER_QUESTION)
       expect(number_of_questions).to eq 3
-      expect(game.is_player_codebreaker?).to eq false 
-    end 
-  end 
+      expect(game.player_codebreaker?).to eq false
+    end
+  end
 
   context 'player is codebreaker' do
     describe '#make_player_guess' do
