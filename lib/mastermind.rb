@@ -27,7 +27,7 @@ class Mastermind
       make_player_guess
       rate_guess
       @past_guesses.push @current_guess
-    end 
+    end
   end
 
   def game_over?
@@ -96,9 +96,10 @@ class Mastermind
 
   def color_occurences_in_guess
     @secret.each_with_object([]) do |color, accumulator|
-      accumulator.push(@current_guess.each_index.select do |i|
+      guess_indices_with_equal_color = @current_guess.each_index.select do |i|
         @current_guess[i] == color
-      end)
+      end
+      accumulator.push guess_indices_with_equal_color
     end
   end
 end
