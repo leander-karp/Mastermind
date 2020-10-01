@@ -2,24 +2,19 @@
 
 # Simple console IO-Wrapper
 class Renderer
-  INVALID_GUESS = 'Invalid guess'
-  CORRECT_GUESS = 'Correct guess'
+  INVALID_CODE = 'Invalid code'
   MAKE_GUESS = 'Please enter your next guess:'
   RATING = 'Your guess received %s %s pegs.'
   NO_GUESSES_EXIST = 'There aren\'t any past guesses.'
-  GUESSES_EXIST = 'You made the following guesses:'
+  GUESSES_EXIST = 'These are the past guesses:'
   WELCOME_MSG = "Welcome to Mastermind.
 You may select whether you wish to be codemaker or codebreaker.
 A correct guess consists of 4 numbers between 1 to 6, e.g. '1111'."
   CODEBREAKER_QUESTION = 'Do you want to be the codebreaker (y/n)?'
   SELECT_SECRET_MSG = 'Please enter the secret code:'
 
-  def display_invalid_guess
-    display INVALID_GUESS
-  end
-
-  def display_correct_guess
-    display CORRECT_GUESS
+  def display_invalid_code
+    display INVALID_CODE
   end
 
   def display_rating(number_of_pegs, color)

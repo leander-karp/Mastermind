@@ -5,17 +5,10 @@ require 'renderer_spy'
 RSpec.describe Renderer do
   subject(:renderer) { RendererSpy.new }
 
-  describe '#display_invalid_guess ' do
+  describe '#display_invalid_code ' do
     it 'displays an invalid guess message' do
-      renderer.display_invalid_guess
-      expect(renderer.displayed_msgs).to eq [described_class::INVALID_GUESS]
-    end
-  end
-
-  describe '#display_correct_guess' do
-    it 'displays an correct guess message' do
-      renderer.display_correct_guess
-      expect(renderer.displayed_msgs).to eq [described_class::CORRECT_GUESS]
+      renderer.display_invalid_code
+      expect(renderer.displayed_msgs).to eq [described_class::INVALID_CODE]
     end
   end
 

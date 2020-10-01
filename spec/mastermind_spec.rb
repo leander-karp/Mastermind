@@ -55,7 +55,7 @@ RSpec.describe MastermindSpy do
     describe '#make_player_guess' do
       it 'asks for guesses until a correct guess is provided' do
         expected_output = [Renderer::MAKE_GUESS,
-                           Renderer::INVALID_GUESS,
+                           Renderer::INVALID_CODE,
                            Renderer::MAKE_GUESS]
 
         invalid_codes.each do |invalid_guess|
@@ -248,8 +248,21 @@ RSpec.describe MastermindSpy do
 
   context 'player is codemaker' do
     it '#computer_guess'
-    it 'makes sure that the player can set a secrect'
-    it '#start'
+
+    describe '#start' do 
+      before(:each) { allow(renderer).to receive(:gets).and_return('n', '2222') }
+
+      it 'lets the player set a secret code' do 
+        game.start 
+        expect(game.secret).to eq [2,2,2,2]
+      end 
+
+      it 'displays the computers guess' do 
+
+      end 
+      
+
+    end 
     # - shows guesses, counts rounds, gets players input
     # rates guesses, promts the winner, provides a welcome message
   end

@@ -22,6 +22,9 @@ class Mastermind
   def start
     renderer.display_welcome_msg
     choose_role
+    
+    @secret = player_select_secret unless player_codebreaker?
+
     until @past_guesses.size >= MAX_ROUNDS || game_over?
       renderer.display_guesses @past_guesses
       make_player_guess
@@ -56,8 +59,8 @@ class Mastermind
   def make_player_guess
     @current_guess = renderer.input_guess
 
-    until verify_guess(@current_guess)
-      renderer.display_invalid_guess
+    until verify_code(@current_guess)
+      renderer.display_invalid_code
       @current_guess = renderer.input_guess
     end
     @current_guess = @current_guess.split('').map(&:to_i)
@@ -75,7 +78,7 @@ class Mastermind
 
   private
 
-  def verify_guess(guess)
+  def verify_code(guess)
     return false if guess.size != SIZE
 
     guess.split('').map do |char|
@@ -95,4 +98,13 @@ class Mastermind
     end
     pegs_per_color
   end
+
+  def player_select_secret
+    secret = renderer.select_secret
+    until verify_code(secret)
+      renderer.invalid_code
+      secret = renderer.secret
+    end 
+    secret.split('').map(&:to_i)
+  end 
 end
