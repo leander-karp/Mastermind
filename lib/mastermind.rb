@@ -8,38 +8,48 @@ class Mastermind
 
   SIZE = 4
   COLORS = (1..6).freeze
+  MAX_ROUNDS = 12
 
   def initialize(renderer)
     @is_player_codebreaker = false
     @renderer = renderer
     @secret = generate_secret_code
     @current_guess = []
+    @past_guesses = []
+    @current_black_rating = 0
   end
 
   def start
     renderer.display_welcome_msg
     choose_role
-    renderer.display_guesses
-    make_player_guess
-    rate_guess
+    until @past_guesses.size >= MAX_ROUNDS || game_over?
+      renderer.display_guesses @past_guesses
+      make_player_guess
+      rate_guess
+      @past_guesses.push @current_guess
+    end 
+  end
+
+  def game_over?
+    @current_black_rating == SIZE
   end
 
   def rate_guess
     pegs_per_color = count_secret_color_occurences
-    black_pegs = 0
+    @current_black_rating = 0
     white_pegs = 0
     @current_guess.each_with_index do |current_color, index|
       next if (pegs_per_color[current_color]).zero?
 
       if current_color == @secret[index]
-        black_pegs += 1
+        @current_black_rating += 1
       elsif @secret.include?(current_color)
         white_pegs += 1
       end
       pegs_per_color[current_color] -= 1
     end
 
-    renderer.display_rating(black_pegs, 'black')
+    renderer.display_rating(@current_black_rating, 'black')
     renderer.display_rating(white_pegs, 'white')
   end
 
