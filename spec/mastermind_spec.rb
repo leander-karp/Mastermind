@@ -218,29 +218,23 @@ RSpec.describe MastermindSpy do
       end 
 
       it 'allows a maximum number of guesses in which each guess is rated and past guesses are displayed' do 
-        def count(msg)
-          renderer.displayed_msgs.count msg 
-        end 
         game.secret = [6,6,6,6]
         game.start
         # 12 guesses
-        expect(count(Renderer::MAKE_GUESS)).to eq Mastermind::MAX_ROUNDS
+        expect(renderer.occurences(Renderer::MAKE_GUESS)).to eq Mastermind::MAX_ROUNDS
         # each guess is rated
-        expect(count(Renderer::RATING % [0, 'black'])).to eq Mastermind::MAX_ROUNDS
-        expect(count(Renderer::RATING % [0, 'white'])).to eq Mastermind::MAX_ROUNDS
+        expect(renderer.occurences(Renderer::RATING % [0, 'black'])).to eq Mastermind::MAX_ROUNDS
+        expect(renderer.occurences(Renderer::RATING % [0, 'white'])).to eq Mastermind::MAX_ROUNDS
         # past guesses are displayed
-        expect(count(Renderer::NO_GUESSES_EXIST)).to eq 1
-        expect(count(Renderer::GUESSES_EXIST)).to eq Mastermind::MAX_ROUNDS-1
+        expect(renderer.occurences(Renderer::NO_GUESSES_EXIST)).to eq 1
+        expect(renderer.occurences(Renderer::GUESSES_EXIST)).to eq Mastermind::MAX_ROUNDS-1
       end 
 
       it 'breaks if the guess is correct' do 
-        def count(msg)
-          renderer.displayed_msgs.count msg 
-        end 
         game.secret = [1,1,1,1]
         game.start
         # first guess hit
-        expect(count(Renderer::MAKE_GUESS)).to eq 1
+        expect(renderer.occurences(Renderer::MAKE_GUESS)).to eq 1
       end 
 
     end
