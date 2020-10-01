@@ -99,6 +99,27 @@ RSpec.describe MastermindSpy do
         expect(renderer.displayed_msgs[-2, 2]).to eq expected_output
       end
 
+      context 'if there are double colors in the guess' do
+        before(:each) { game.secret = [3, 3, 4, 1] }
+        it 'awards one black peg if the color is at the right position' do
+          allow(renderer).to receive(:gets).and_return('2211')
+          expected_output = [format(Renderer::RATING, 1, 'black'),
+                             format(Renderer::RATING, 0, 'white')]
+          game.make_player_guess
+          game.rate_guess
+          expect(renderer.displayed_msgs[-2, 2]).to eq expected_output
+        end
+
+        it 'awards 1 white peg if the color is somewere' do
+          allow(renderer).to receive(:gets).and_return('1122')
+          expected_output = [format(Renderer::RATING, 0, 'black'),
+                             format(Renderer::RATING, 1, 'white')]
+          game.make_player_guess
+          game.rate_guess
+          expect(renderer.displayed_msgs[-2, 2]).to eq expected_output
+        end
+      end
+
       context 'if the secret is 1234' do
         before(:each) do
           game.secret = [1, 2, 3, 4]
