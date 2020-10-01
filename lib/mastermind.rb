@@ -35,18 +35,24 @@ class Mastermind
   end
 
   def rate_guess
-    pegs_per_color = count_secret_color_occurences
+    occurences = color_occurences_in_guess
     @current_black_rating = 0
     white_pegs = 0
-    @current_guess.each_with_index do |current_color, index|
-      next if (pegs_per_color[current_color]).zero?
 
-      if current_color == @secret[index]
+    @secret.each_index do |index|
+      next if occurences[index].empty?
+
+      if occurences[index].include?(index)
         @current_black_rating += 1
-      elsif @secret.include?(current_color)
-        white_pegs += 1
+      else
+        index_to_remove = occurences[index].reject { |i| occurences[i].include?(i) }.sample
+        unless index_to_remove.nil?
+          white_pegs += 1
+          occurences.each_index do |i|
+            occurences[i].delete(index_to_remove)
+          end
+        end
       end
-      pegs_per_color[current_color] -= 1
     end
 
     renderer.display_rating(@current_black_rating, 'black')
@@ -88,11 +94,11 @@ class Mastermind
     Array.new(SIZE) { generator.rand(6) + 1 }
   end
 
-  def count_secret_color_occurences
-    pegs_per_color = {}
-    COLORS.each do |color|
-      pegs_per_color[color] = @secret.count(color)
+  def color_occurences_in_guess
+    @secret.each_with_object([]) do |color, accumulator|
+      accumulator.push(@current_guess.each_index.select do |i|
+        @current_guess[i] == color
+      end)
     end
-    pegs_per_color
   end
 end
