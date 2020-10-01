@@ -12,6 +12,7 @@ class Renderer
 You may select whether you wish to be codemaker or codebreaker.
 A correct guess consists of 4 numbers between 1 to 6, e.g. '1111'."
   CODEBREAKER_QUESTION = 'Do you want to be the codebreaker (y/n)?'
+  SELECT_SECRET_MSG = 'Please enter the secret code:'
 
   def display_invalid_guess
     display INVALID_GUESS
@@ -42,6 +43,10 @@ A correct guess consists of 4 numbers between 1 to 6, e.g. '1111'."
     guesses.each_with_index do |guess, index|
       display "#{index + 1}. #{guess}"
     end
+  end
+
+  def select_secret
+    input SELECT_SECRET_MSG
   end
 
   private
