@@ -92,7 +92,7 @@ class Mastermind
 
   def generate_code
     generator = Random.new
-    Array.new(SIZE) { generator.rand(6) + 1 }
+    Array.new(SIZE) { generator.rand(COLORS.max) + 1 }
   end
 
   def count_secret_color_occurences
@@ -113,7 +113,10 @@ class Mastermind
   end
 
   def computer_guess 
-    guess = generate_code
+    guess = generate_code 
+    while @past_guesses.include? guess 
+      guess = generate_code
+    end
     renderer.display_computer_guess guess.join('')
     @current_guess = guess
   end 
