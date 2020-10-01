@@ -3,5 +3,4 @@
 require_relative 'lib/mastermind'
 require_relative 'lib/renderer'
 
-mastermind = Mastermind.new(Renderer.new)
-mastermind.make_player_guess
+Mastermind.new(Renderer.new).start

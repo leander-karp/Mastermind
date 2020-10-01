@@ -56,8 +56,7 @@ RSpec.describe MastermindSpy do
       it 'asks for guesses until a correct guess is provided' do
         expected_output = [Renderer::MAKE_GUESS,
                            Renderer::INVALID_GUESS,
-                           Renderer::MAKE_GUESS,
-                           Renderer::CORRECT_GUESS]
+                           Renderer::MAKE_GUESS]
 
         invalid_codes.each do |invalid_guess|
           correct_guess = correct_codes.sample.join('')
@@ -202,9 +201,71 @@ RSpec.describe MastermindSpy do
         end
       end
     end
+
+    describe '#start' do
+      # 1. welcome
+      # 2.1. choose role
+      # 2.2. set secret (player or computer)
+      # for i < 12
+      # 3. show guesses
+      # 4. make guess (player or computer)
+      # 5. rate guess
+      # 6. game over
+
+      before(:each) { allow(renderer).to receive(:gets).and_return('y', '1111') }
+
+      it 'displays a welcome message' do 
+        game.start
+        expect(renderer.displayed_msgs[0]).to eq Renderer::WELCOME_MSG
+      end
+
+      it 'lets the player choose his role' do
+        game.start
+        expect(renderer.displayed_msgs[1]).to eq Renderer::CODEBREAKER_QUESTION
+      end
+
+      it 'displays that no guesses were made' do 
+        game.start
+        expect(renderer.displayed_msgs[2]).to eq Renderer::NO_GUESSES_EXIST
+      end 
+
+      it 'lets the player make a guess and rates it' do 
+        game.secret = [1,1,1,1]
+        game.start
+        expect(renderer.displayed_msgs[3]).to eq Renderer::MAKE_GUESS
+        expect(renderer.displayed_msgs[4]).to eq Renderer::RATING % [4, 'black']
+        expect(renderer.displayed_msgs[5]).to eq Renderer::RATING % [0, 'white']
+
+      end 
+
+      it 'allows a maximum number of guesses in which each guess is rated and past guesses are displayed' do 
+        game.secret = [6,6,6,6]
+        game.start
+        # 12 guesses
+        expect(renderer.occurences(Renderer::MAKE_GUESS)).to eq Mastermind::MAX_ROUNDS
+        # each guess is rated
+        expect(renderer.occurences(Renderer::RATING % [0, 'black'])).to eq Mastermind::MAX_ROUNDS
+        expect(renderer.occurences(Renderer::RATING % [0, 'white'])).to eq Mastermind::MAX_ROUNDS
+        # past guesses are displayed
+        expect(renderer.occurences(Renderer::NO_GUESSES_EXIST)).to eq 1
+        expect(renderer.occurences(Renderer::GUESSES_EXIST)).to eq Mastermind::MAX_ROUNDS-1
+      end 
+
+      it 'breaks if the guess is correct' do 
+        game.secret = [1,1,1,1]
+        game.start
+        # first guess hit
+        expect(renderer.occurences(Renderer::MAKE_GUESS)).to eq 1
+      end 
+
+    end
   end
 
-  it '#start'
-  # - shows guesses, counts rounds, gets players input
-  # rates guesses, promts the winner, provides a welcome message
+  context 'player is codemaker' do
+    it '#computer_guess'
+    it 'makes sure that the player can set a secrect'
+    it '#start'
+    # - shows guesses, counts rounds, gets players input
+    # rates guesses, promts the winner, provides a welcome message
+  end
 end
