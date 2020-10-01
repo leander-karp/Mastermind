@@ -13,7 +13,7 @@ class Mastermind
   def initialize(renderer)
     @is_player_codebreaker = false
     @renderer = renderer
-    @secret = generate_secret_code
+    @secret = generate_code
     @current_guess = []
     @past_guesses = []
     @current_black_rating = 0
@@ -27,7 +27,11 @@ class Mastermind
 
     until @past_guesses.size >= MAX_ROUNDS || game_over?
       renderer.display_guesses @past_guesses
-      make_player_guess
+      if player_codebreaker?
+        make_player_guess
+      else
+        computer_guess
+      end
       rate_guess
       @past_guesses.push @current_guess
     end
@@ -86,7 +90,7 @@ class Mastermind
     end.all?
   end
 
-  def generate_secret_code
+  def generate_code
     generator = Random.new
     Array.new(SIZE) { generator.rand(6) + 1 }
   end
@@ -102,9 +106,15 @@ class Mastermind
   def player_select_secret
     secret = renderer.select_secret
     until verify_code(secret)
-      renderer.invalid_code
-      secret = renderer.secret
+      renderer.display_invalid_code
+      secret = renderer.select_secret
     end
     secret.split('').map(&:to_i)
   end
+
+  def computer_guess 
+    guess = generate_code
+    renderer.display_computer_guess guess.join('')
+    @current_guess = guess
+  end 
 end

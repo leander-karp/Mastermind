@@ -14,7 +14,7 @@ RSpec.describe Renderer do
 
   describe '#display_rating' do
     it 'displays the given rating of the players guess' do
-      msg = 'Your guess received 0 black pegs.'
+      msg = 'The guess received 0 black pegs.'
       renderer.display_rating(0, 'black')
       expect(renderer.displayed_msgs).to eq [msg]
     end

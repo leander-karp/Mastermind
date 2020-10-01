@@ -105,7 +105,7 @@ RSpec.describe MastermindSpy do
 
         it 'awards 1 black peg if the guess has one correct color at the correct position' do
           correct_guesses = [[1, 6, 6, 6], [6, 2, 6, 6], [6, 6, 3, 6], [6, 6, 6, 4]]
-          expected_output = 'Your guess received 1 black pegs.'
+          expected_output = 'The guess received 1 black pegs.'
           correct_guesses.each do |guess|
             allow(renderer).to receive(:gets).and_return(guess.join(''))
             game.make_player_guess
@@ -117,7 +117,7 @@ RSpec.describe MastermindSpy do
         it 'awards 2 black pegs if the guess has two correct colors at the correct positions' do
           correct_guesses = [[1, 2, 6, 6], [1, 6, 3, 6], [1, 6, 6, 4], [6, 2, 3, 6],
                              [6, 2, 6, 4], [6, 6, 3, 4]]
-          expected_output = 'Your guess received 2 black pegs.'
+          expected_output = 'The guess received 2 black pegs.'
           correct_guesses.each do |guess|
             allow(renderer).to receive(:gets).and_return(guess.join(''))
             game.make_player_guess
@@ -128,7 +128,7 @@ RSpec.describe MastermindSpy do
 
         it 'awards 3 black pegs if the guess has three correct colors at the correct positions' do
           correct_guesses = [[1, 2, 3, 6], [1, 2, 6, 4], [1, 6, 3, 4], [6, 2, 3, 4]]
-          expected_output = 'Your guess received 3 black pegs.'
+          expected_output = 'The guess received 3 black pegs.'
           correct_guesses.each do |guess|
             allow(renderer).to receive(:gets).and_return(guess.join(''))
             game.make_player_guess
@@ -138,7 +138,7 @@ RSpec.describe MastermindSpy do
         end
 
         it 'awards 4 black pegs if the guess equals the secret' do
-          expected_output = 'Your guess received 4 black pegs.'
+          expected_output = 'The guess received 4 black pegs.'
           allow(renderer).to receive(:gets).and_return('1234')
           game.make_player_guess
           game.rate_guess
@@ -146,7 +146,7 @@ RSpec.describe MastermindSpy do
         end
 
         it 'awards 1 white peg if one color is correct, but not at the right position' do
-          expected_output = 'Your guess received 1 white pegs.'
+          expected_output = 'The guess received 1 white pegs.'
           allow(renderer).to receive(:gets).and_return('6661')
           game.make_player_guess
           game.rate_guess
@@ -154,7 +154,7 @@ RSpec.describe MastermindSpy do
         end
 
         it 'awards 4 white pegs if all secret colors are present' do
-          expected_output = 'Your guess received 4 white pegs.'
+          expected_output = 'The guess received 4 white pegs.'
           allow(renderer).to receive(:gets).and_return('4321')
           game.make_player_guess
           game.rate_guess
@@ -256,6 +256,16 @@ RSpec.describe MastermindSpy do
       end
 
       it 'displays the computers guess' do
+        expected_msg = Regexp.new(
+          Renderer::COMPUTER_GUESS[0, Renderer::COMPUTER_GUESS.size-3])
+
+        game.start 
+
+        guesses = renderer.displayed_msgs.reduce(0) do |acc, msg|
+          acc += 1 if expected_msg.match?(msg)
+          acc 
+        end
+        expect((1..12).include?(guesses)).to eq true
       end
     end
     # - shows guesses, counts rounds, gets players input

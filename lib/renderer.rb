@@ -4,7 +4,7 @@
 class Renderer
   INVALID_CODE = 'Invalid code'
   MAKE_GUESS = 'Please enter your next guess:'
-  RATING = 'Your guess received %s %s pegs.'
+  RATING = 'The guess received %s %s pegs.'
   NO_GUESSES_EXIST = 'There aren\'t any past guesses.'
   GUESSES_EXIST = 'These are the past guesses:'
   WELCOME_MSG = "Welcome to Mastermind.
@@ -12,6 +12,7 @@ You may select whether you wish to be codemaker or codebreaker.
 A correct guess consists of 4 numbers between 1 to 6, e.g. '1111'."
   CODEBREAKER_QUESTION = 'Do you want to be the codebreaker (y/n)?'
   SELECT_SECRET_MSG = 'Please enter the secret code:'
+  COMPUTER_GUESS = 'The computer guessed: %s'
 
   def display_invalid_code
     display INVALID_CODE
@@ -39,6 +40,10 @@ A correct guess consists of 4 numbers between 1 to 6, e.g. '1111'."
       display "#{index + 1}. #{guess}"
     end
   end
+
+  def display_computer_guess (guess)
+    display COMPUTER_GUESS % guess 
+  end 
 
   def select_secret
     input SELECT_SECRET_MSG
