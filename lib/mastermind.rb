@@ -22,7 +22,7 @@ class Mastermind
   def start
     renderer.display_welcome_msg
     choose_role
-    
+
     @secret = player_select_secret unless player_codebreaker?
 
     until @past_guesses.size >= MAX_ROUNDS || game_over?
@@ -30,7 +30,7 @@ class Mastermind
       make_player_guess
       rate_guess
       @past_guesses.push @current_guess
-    end 
+    end
   end
 
   def game_over?
@@ -104,7 +104,7 @@ class Mastermind
     until verify_code(secret)
       renderer.invalid_code
       secret = renderer.secret
-    end 
+    end
     secret.split('').map(&:to_i)
-  end 
+  end
 end

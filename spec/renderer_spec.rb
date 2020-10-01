@@ -60,11 +60,11 @@ RSpec.describe Renderer do
       expect(renderer.displayed_msgs).to eq [Renderer::CODEBREAKER_QUESTION]
     end
   end
-  describe '#select_secret' do 
-    it 'allows the player to select a secret' do 
+  describe '#select_secret' do
+    it 'allows the player to select a secret' do
       allow(renderer).to receive(:gets).and_return('secret')
       expect(renderer.select_secret).to eq 'secret'
       expect(renderer.displayed_msgs).to eq [described_class::SELECT_SECRET_MSG]
-    end 
+    end
   end
 end
