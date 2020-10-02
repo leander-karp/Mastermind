@@ -43,18 +43,29 @@ class Mastermind
 
   def rate_guess
     occurences = color_occurences_in_guess
+    # secrect index: [indices in guess having the secret color]
+    
     @current_black_rating = 0
     white_pegs = 0
 
     @secret.each_index do |index|
+      # continue if the secrect color is not present in the guess
       next if occurences[index].empty?
+      
 
       if occurences[index].include?(index)
+        # the secret color is at the right position in the guess 
+        # => a black peg is added to the rating
         @current_black_rating += 1
       else
+        # check if white pegs can be addet to the rating
+
+        # select all indices from occurences[index] which do not match an index
+        # in occurences
         index_to_remove = occurences[index].reject { |i| occurences[i].include?(i) }.sample
         unless index_to_remove.nil?
           white_pegs += 1
+          # remove the used index from everywhere
           occurences.each_index do |i|
             occurences[i].delete(index_to_remove)
           end
