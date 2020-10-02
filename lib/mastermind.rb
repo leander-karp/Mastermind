@@ -42,37 +42,36 @@ class Mastermind
   end
 
   def rate_guess
-    occurences = color_occurences_in_guess
-    # secrect index: [indices in guess having the secret color]
-    
     @current_black_rating = 0
     white_pegs = 0
+    used_secret_indices = []
+    used_guess_indices = []
 
-    @secret.each_index do |index|
-      # continue if the secrect color is not present in the guess
-      next if occurences[index].empty?
-      
+    def all_indices(element_to_find, array)
+      array.each_index.select { |index| array[index] == element_to_find }
+    end 
 
-      if occurences[index].include?(index)
-        # the secret color is at the right position in the guess 
-        # => a black peg is added to the rating
-        @current_black_rating += 1
-      else
-        # check if white pegs can be addet to the rating
+    @secret.each_with_index do |secret_color, secret_index|
+      if secret_color == @current_guess[secret_index]
+        @current_black_rating += 1 
+        used_secret_indices.push secret_index
+        used_guess_indices.push  secret_index
+      end 
+    end 
 
-        # select all indices from occurences[index] which do not match an index
-        # in occurences
-        index_to_remove = occurences[index].reject { |i| occurences[i].include?(i) }.sample
-        unless index_to_remove.nil?
+    @current_guess.each_with_index do |guess_color, guess_index|
+      unless used_guess_indices.include?(guess_index)
+        indices = all_indices(guess_color, @secret)
+        delta = indices.difference(used_secret_indices)
+
+        if @secret.include?(guess_color) && !delta.empty?
           white_pegs += 1
-          # remove the used index from everywhere
-          occurences.each_index do |i|
-            occurences[i].delete(index_to_remove)
-          end
+          used_secret_indices.push delta.pop
+          used_guess_indices.push  guess_index
         end
       end
-    end
-
+    end 
+    
     renderer.display_rating(@current_black_rating, 'black')
     renderer.display_rating(white_pegs, 'white')
   end
@@ -110,15 +109,6 @@ class Mastermind
   def generate_code
     generator = Random.new
     Array.new(SIZE) { generator.rand(COLORS.max) + 1 }
-  end
-
-  def color_occurences_in_guess
-    @secret.each_with_object([]) do |color, accumulator|
-      guess_indices_with_equal_color = @current_guess.each_index.select do |i|
-        @current_guess[i] == color
-      end
-      accumulator.push guess_indices_with_equal_color
-    end
   end
 
   def player_select_secret
