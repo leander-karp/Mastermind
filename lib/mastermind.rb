@@ -47,31 +47,31 @@ class Mastermind
     used_secret_indices = []
     used_guess_indices = []
 
-    def all_indices(element_to_find, array)
+    all_indices_of lambda { |element_to_find, array|
       array.each_index.select { |index| array[index] == element_to_find }
-    end 
+    }
 
     @secret.each_with_index do |secret_color, secret_index|
-      if secret_color == @current_guess[secret_index]
-        @current_black_rating += 1 
-        used_secret_indices.push secret_index
-        used_guess_indices.push  secret_index
-      end 
-    end 
+      next unless secret_color == @current_guess[secret_index]
+
+      @current_black_rating += 1
+      used_secret_indices.push secret_index
+      used_guess_indices.push  secret_index
+    end
 
     @current_guess.each_with_index do |guess_color, guess_index|
-      unless used_guess_indices.include?(guess_index)
-        indices = all_indices(guess_color, @secret)
-        delta = indices.difference(used_secret_indices)
+      next if used_guess_indices.include?(guess_index)
 
-        if @secret.include?(guess_color) && !delta.empty?
-          white_pegs += 1
-          used_secret_indices.push delta.pop
-          used_guess_indices.push  guess_index
-        end
-      end
-    end 
-    
+      indices = all_indices_of(guess_color, @secret)
+      delta = indices.difference(used_secret_indices)
+
+      next unless @secret.include?(guess_color) && !delta.empty?
+
+      white_pegs += 1
+      used_secret_indices.push delta.pop
+      used_guess_indices.push  guess_index
+    end
+
     renderer.display_rating(@current_black_rating, 'black')
     renderer.display_rating(white_pegs, 'white')
   end
