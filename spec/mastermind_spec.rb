@@ -256,16 +256,12 @@ RSpec.describe MastermindSpy do
       end
 
       it 'displays the computers guess' do
-        expected_msg = Regexp.new(
-          Renderer::COMPUTER_GUESS[0, Renderer::COMPUTER_GUESS.size-3])
+        expected_msg = Regexp.new(format(Renderer::COMPUTER_GUESS, '[1-6, \]\[]+'))
 
-        game.start 
+        game.start
 
-        guesses = renderer.displayed_msgs.reduce(0) do |acc, msg|
-          acc += 1 if expected_msg.match?(msg)
-          acc 
-        end
-        expect((1..12).include?(guesses)).to eq true
+        guesses = renderer.displayed_msgs.count { |msg| expected_msg.match? msg }
+        be_within(1..Mastermind::MAX_ROUNDS).of guesses
       end
     end
     # - shows guesses, counts rounds, gets players input

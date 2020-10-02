@@ -41,9 +41,9 @@ A correct guess consists of 4 numbers between 1 to 6, e.g. '1111'."
     end
   end
 
-  def display_computer_guess (guess)
-    display COMPUTER_GUESS % guess 
-  end 
+  def display_computer_guess(guess)
+    display COMPUTER_GUESS % guess
+  end
 
   def select_secret
     input SELECT_SECRET_MSG

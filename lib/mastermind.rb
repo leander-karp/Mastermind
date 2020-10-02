@@ -112,12 +112,10 @@ class Mastermind
     secret.split('').map(&:to_i)
   end
 
-  def computer_guess 
-    guess = generate_code 
-    while @past_guesses.include? guess 
-      guess = generate_code
-    end
+  def computer_guess
+    guess = generate_code
+    guess = generate_code while @past_guesses.include? guess
     renderer.display_computer_guess guess.join('')
     @current_guess = guess
-  end 
+  end
 end
