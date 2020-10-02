@@ -44,24 +44,34 @@ class Mastermind
   end
 
   def rate_guess
-    occurences = color_occurences_in_guess
     @current_black_rating = 0
     white_pegs = 0
+    used_secret_indices = []
+    used_guess_indices = []
 
-    @secret.each_index do |index|
-      next if occurences[index].empty?
+    all_indices_of lambda { |element_to_find, array|
+      array.each_index.select { |index| array[index] == element_to_find }
+    }
 
-      if occurences[index].include?(index)
-        @current_black_rating += 1
-      else
-        index_to_remove = occurences[index].reject { |i| occurences[i].include?(i) }.sample
-        unless index_to_remove.nil?
-          white_pegs += 1
-          occurences.each_index do |i|
-            occurences[i].delete(index_to_remove)
-          end
-        end
-      end
+    @secret.each_with_index do |secret_color, secret_index|
+      next unless secret_color == @current_guess[secret_index]
+
+      @current_black_rating += 1
+      used_secret_indices.push secret_index
+      used_guess_indices.push  secret_index
+    end
+
+    @current_guess.each_with_index do |guess_color, guess_index|
+      next if used_guess_indices.include?(guess_index)
+
+      indices = all_indices_of(guess_color, @secret)
+      delta = indices.difference(used_secret_indices)
+
+      next unless @secret.include?(guess_color) && !delta.empty?
+
+      white_pegs += 1
+      used_secret_indices.push delta.pop
+      used_guess_indices.push  guess_index
     end
 
     renderer.display_rating(@current_black_rating, 'black')
@@ -101,15 +111,6 @@ class Mastermind
   def generate_code
     generator = Random.new
     Array.new(SIZE) { generator.rand(COLORS.max) + 1 }
-  end
-
-  def color_occurences_in_guess
-    @secret.each_with_object([]) do |color, accumulator|
-      guess_indices_with_equal_color = @current_guess.each_index.select do |i|
-        @current_guess[i] == color
-      end
-      accumulator.push guess_indices_with_equal_color
-    end
   end
 
   def player_select_secret
