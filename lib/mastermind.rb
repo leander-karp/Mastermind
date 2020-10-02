@@ -25,7 +25,7 @@ class Mastermind
 
     @secret = player_select_secret unless player_codebreaker?
 
-    until @past_guesses.size >= MAX_ROUNDS || game_over?
+    until game_over?
       renderer.display_guesses @past_guesses
       if player_codebreaker?
         make_player_guess
@@ -35,10 +35,12 @@ class Mastermind
       rate_guess
       @past_guesses.push @current_guess
     end
+
+    declare_winner
   end
 
   def game_over?
-    @current_black_rating == SIZE
+    !guesses_left? || @current_black_rating == SIZE
   end
 
   def rate_guess
@@ -86,7 +88,7 @@ class Mastermind
     @is_player_codebreaker
   end
 
-  private
+  protected
 
   def verify_code(guess)
     return false if guess.size != SIZE
@@ -124,5 +126,18 @@ class Mastermind
     guess = generate_code while @past_guesses.include? guess
     renderer.display_computer_guess guess.join('')
     @current_guess = guess
+  end
+
+  def declare_winner
+    winner = if player_codebreaker?
+               !guesses_left? ? 'The Computer' : 'You'
+             else
+               !guesses_left? ? 'You' : 'The Computer'
+             end
+    renderer.display_winner winner
+  end
+
+  def guesses_left?
+    @past_guesses.size < MAX_ROUNDS
   end
 end

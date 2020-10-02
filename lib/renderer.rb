@@ -13,9 +13,14 @@ A correct guess consists of 4 numbers between 1 to 6, e.g. '1111'."
   CODEBREAKER_QUESTION = 'Do you want to be the codebreaker (y/n)?'
   SELECT_SECRET_MSG = 'Please enter the secret code:'
   COMPUTER_GUESS = 'The computer guessed: %s'
+  WINNER = '%s won.'
 
   def display_invalid_code
     display INVALID_CODE
+  end
+
+  def display_winner(person)
+    display format(WINNER, person)
   end
 
   def display_rating(number_of_pegs, color)
