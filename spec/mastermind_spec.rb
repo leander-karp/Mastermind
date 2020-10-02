@@ -5,20 +5,19 @@ require 'renderer_spy'
 
 class MastermindSpy < Mastermind
   attr_accessor :secret
-  attr_accessor :ai_guesses
+  attr_accessor :ai_guess
 
   def initialize(renderer)
     super(renderer)
-    @ai_guesses = []
+    @ai_guess = []
   end
 
   def computer_guess
-    if @ai_guesses.empty?
+    if @ai_guess.empty?
       super
     else
-      guess = ai_guesses.pop
-      renderer.display_computer_guess guess.join('')
-      @current_guess = guess
+      renderer.display_computer_guess ai_guess.join('')
+      @current_guess = ai_guess
     end
   end
 end
@@ -311,7 +310,7 @@ RSpec.describe MastermindSpy do
 
       it 'announces the winner (the computer) at the end.' do
         expected_winner = format(Renderer::WINNER, 'The Computer')
-        game.ai_guesses.push [2, 2, 2, 2]
+        game.ai_guess = [2, 2, 2, 2]
         game.start
 
         expect(renderer.displayed_msgs.last).to eq expected_winner
@@ -319,7 +318,7 @@ RSpec.describe MastermindSpy do
 
       it 'announces the winner (the player) at the end.' do
         expected_winner = format(Renderer::WINNER, 'You')
-        game.ai_guesses.append(Array.new(12) { [1, 1, 1, 1] })
+        game.ai_guess = [1, 1, 1, 1]
         game.start
         expect(renderer.displayed_msgs.last).to eq expected_winner
       end
