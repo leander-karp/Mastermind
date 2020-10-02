@@ -5,6 +5,22 @@ require 'renderer_spy'
 
 class MastermindSpy < Mastermind
   attr_accessor :secret
+  attr_accessor :ai_guesses
+
+  def initialize(renderer)
+    super(renderer)
+    @ai_guesses = []
+  end
+
+  def computer_guess
+    if @ai_guesses.empty?
+      super
+    else
+      guess = ai_guesses.pop
+      renderer.display_computer_guess guess.join('')
+      @current_guess = guess
+    end
+  end
 end
 
 def generate_codes(range)
@@ -256,12 +272,26 @@ RSpec.describe MastermindSpy do
         # first guess hit
         expect(renderer.occurences(Renderer::MAKE_GUESS)).to eq 1
       end
+
+      it 'announces the winner (the computer) at the end.' do
+        expected_winner = format(Renderer::WINNER, 'The Computer')
+        game.secret = [2, 2, 2, 2]
+        game.start
+
+        expect(renderer.displayed_msgs.last).to eq expected_winner
+      end
+
+      it 'announces the winner (the player) at the end.' do
+        expected_winner = format(Renderer::WINNER, 'You')
+        game.secret = [1, 1, 1, 1]
+        game.start
+
+        expect(renderer.displayed_msgs.last).to eq expected_winner
+      end
     end
   end
 
   context 'player is codemaker' do
-    it '#computer_guess'
-
     describe '#start' do
       before(:each) { allow(renderer).to receive(:gets).and_return('n', '2222') }
 
@@ -278,8 +308,21 @@ RSpec.describe MastermindSpy do
         guesses = renderer.displayed_msgs.count { |msg| expected_msg.match? msg }
         be_within(1..Mastermind::MAX_ROUNDS).of guesses
       end
+
+      it 'announces the winner (the computer) at the end.' do
+        expected_winner = format(Renderer::WINNER, 'The Computer')
+        game.ai_guesses.push [2, 2, 2, 2]
+        game.start
+
+        expect(renderer.displayed_msgs.last).to eq expected_winner
+      end
+
+      it 'announces the winner (the player) at the end.' do
+        expected_winner = format(Renderer::WINNER, 'You')
+        game.ai_guesses.append(Array.new(12) { [1, 1, 1, 1] })
+        game.start
+        expect(renderer.displayed_msgs.last).to eq expected_winner
+      end
     end
-    # - shows guesses, counts rounds, gets players input
-    # rates guesses, promts the winner, provides a welcome message
   end
 end
