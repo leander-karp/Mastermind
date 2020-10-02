@@ -5,23 +5,16 @@ require 'renderer_spy'
 RSpec.describe Renderer do
   subject(:renderer) { RendererSpy.new }
 
-  describe '#display_invalid_guess ' do
+  describe '#display_invalid_code ' do
     it 'displays an invalid guess message' do
-      renderer.display_invalid_guess
-      expect(renderer.displayed_msgs).to eq [described_class::INVALID_GUESS]
-    end
-  end
-
-  describe '#display_correct_guess' do
-    it 'displays an correct guess message' do
-      renderer.display_correct_guess
-      expect(renderer.displayed_msgs).to eq [described_class::CORRECT_GUESS]
+      renderer.display_invalid_code
+      expect(renderer.displayed_msgs).to eq [described_class::INVALID_CODE]
     end
   end
 
   describe '#display_rating' do
     it 'displays the given rating of the players guess' do
-      msg = 'Your guess received 0 black pegs.'
+      msg = 'The guess received 0 black pegs.'
       renderer.display_rating(0, 'black')
       expect(renderer.displayed_msgs).to eq [msg]
     end
@@ -65,6 +58,13 @@ RSpec.describe Renderer do
       allow(renderer).to receive(:gets).and_return('y')
       expect(renderer.choose_role).to eq 'y'
       expect(renderer.displayed_msgs).to eq [Renderer::CODEBREAKER_QUESTION]
+    end
+  end
+  describe '#select_secret' do
+    it 'allows the player to select a secret' do
+      allow(renderer).to receive(:gets).and_return('secret')
+      expect(renderer.select_secret).to eq 'secret'
+      expect(renderer.displayed_msgs).to eq [described_class::SELECT_SECRET_MSG]
     end
   end
 end

@@ -13,7 +13,7 @@ class Mastermind
   def initialize(renderer)
     @is_player_codebreaker = false
     @renderer = renderer
-    @secret = generate_secret_code
+    @secret = generate_code
     @current_guess = []
     @past_guesses = []
     @current_black_rating = 0
@@ -22,9 +22,16 @@ class Mastermind
   def start
     renderer.display_welcome_msg
     choose_role
+
+    @secret = player_select_secret unless player_codebreaker?
+
     until @past_guesses.size >= MAX_ROUNDS || game_over?
       renderer.display_guesses @past_guesses
-      make_player_guess
+      if player_codebreaker?
+        make_player_guess
+      else
+        computer_guess
+      end
       rate_guess
       @past_guesses.push @current_guess
     end
@@ -62,8 +69,8 @@ class Mastermind
   def make_player_guess
     @current_guess = renderer.input_guess
 
-    until verify_guess(@current_guess)
-      renderer.display_invalid_guess
+    until verify_code(@current_guess)
+      renderer.display_invalid_code
       @current_guess = renderer.input_guess
     end
     @current_guess = @current_guess.split('').map(&:to_i)
@@ -81,7 +88,7 @@ class Mastermind
 
   private
 
-  def verify_guess(guess)
+  def verify_code(guess)
     return false if guess.size != SIZE
 
     guess.split('').map do |char|
@@ -89,9 +96,9 @@ class Mastermind
     end.all?
   end
 
-  def generate_secret_code
+  def generate_code
     generator = Random.new
-    Array.new(SIZE) { generator.rand(6) + 1 }
+    Array.new(SIZE) { generator.rand(COLORS.max) + 1 }
   end
 
   def color_occurences_in_guess
@@ -101,5 +108,21 @@ class Mastermind
       end
       accumulator.push guess_indices_with_equal_color
     end
+  end
+
+  def player_select_secret
+    secret = renderer.select_secret
+    until verify_code(secret)
+      renderer.display_invalid_code
+      secret = renderer.select_secret
+    end
+    secret.split('').map(&:to_i)
+  end
+
+  def computer_guess
+    guess = generate_code
+    guess = generate_code while @past_guesses.include? guess
+    renderer.display_computer_guess guess.join('')
+    @current_guess = guess
   end
 end
